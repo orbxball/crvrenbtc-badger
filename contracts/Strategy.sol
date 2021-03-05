@@ -77,7 +77,7 @@ contract Strategy is BaseStrategy {
         maxReportDelay = 5 days;
         profitFactor = 2e3;
         debtThreshold = 4e19;
-        proxy = address(0x9a165622a744C20E3B2CB443AeD98110a33a231b);
+        proxy = address(0x96Dd07B6c99b22F3f0cB1836aFF8530a98BDe9E3);
         dex = sushiswap;
 
         IERC20(crv).approve(dex, uint256(-1));
