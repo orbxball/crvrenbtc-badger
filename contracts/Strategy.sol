@@ -73,9 +73,10 @@ contract Strategy is BaseStrategy {
 
     constructor(address _vault) public BaseStrategy(_vault) {
         // You can set these parameters on deployment to whatever you want
-        maxReportDelay = 18900; // 6300*3
-        // profitFactor = 100;
-        // debtThreshold = 0;
+        minReportDelay = 1 days;
+        maxReportDelay = 5 days;
+        profitFactor = 2e3;
+        debtThreshold = 4e19;
         proxy = address(0x9a165622a744C20E3B2CB443AeD98110a33a231b);
         dex = sushiswap;
 
