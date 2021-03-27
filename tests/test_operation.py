@@ -10,7 +10,8 @@ def test_operation(accounts, token, vault, strategy, strategist, amount):
 
     # harvest
     strategy.harvest()
-    assert token.balanceOf(strategy.address) == amount
+    print(f'\n [normal harvest]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
 
     # tend()
     strategy.tend()
@@ -25,11 +26,14 @@ def test_emergency_exit(accounts, token, vault, strategy, strategist, amount):
     token.approve(vault.address, amount, {"from": accounts[0]})
     vault.deposit(amount, {"from": accounts[0]})
     strategy.harvest()
-    assert token.balanceOf(strategy.address) == amount
+    print(f'\n [normal harvest]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
 
     # set emergency and exit
     strategy.setEmergencyExit()
     strategy.harvest()
+    print(f'\n [harvest after set emergency exit]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
     assert token.balanceOf(strategy.address) < amount
 
 
@@ -41,7 +45,8 @@ def test_profitable_harvest(accounts, token, vault, strategy, strategist, amount
 
     # harvest
     strategy.harvest()
-    assert token.balanceOf(strategy.address) == amount
+    print(f'\n [normal harvest]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
 
     # You should test that the harvest method is capable of making a profit.
     # TODO: uncomment the following lines.
@@ -57,11 +62,13 @@ def test_change_debt(gov, token, vault, strategy, strategist, amount):
     vault.updateStrategyDebtRatio(strategy.address, 5_000, {"from": gov})
     strategy.harvest()
 
-    assert token.balanceOf(strategy.address) == amount / 2
+    print(f'\n [update strategy debt ratio: 5_000]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
 
     vault.updateStrategyDebtRatio(strategy.address, 10_000, {"from": gov})
     strategy.harvest()
-    assert token.balanceOf(strategy.address) == amount
+    print(f'\n [update strategy debt ratio back: 10_000]')
+    print(f'token balance on strategy: {token.balanceOf(strategy.address)}')
 
     # In order to pass this tests, you will need to implement prepareReturn.
     # TODO: uncomment the following lines.
@@ -98,7 +105,11 @@ def test_triggers(gov, vault, strategy, token, amount, weth, weth_amout):
     token.approve(vault.address, amount, {"from": gov})
     vault.deposit(amount, {"from": gov})
     vault.updateStrategyDebtRatio(strategy.address, 5_000, {"from": gov})
+
+    print(f'harvest trigger: {strategy.harvestTrigger(0)}')
+    print(f'tend trigger : {strategy.tendTrigger(0)}')
+
     strategy.harvest()
 
-    strategy.harvestTrigger(0)
-    strategy.tendTrigger(0)
+    print(f'harvest trigger: {strategy.harvestTrigger(0)}')
+    print(f'tend trigger : {strategy.tendTrigger(0)}')
